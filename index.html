@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Holiss ❤️</title>
-  
+
   <!-- Confeti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -21,7 +21,7 @@
       min-height: 100vh;
       align-items: center;
       text-align: center;
-      overflow-x: hidden; /* Evitar scroll lateral con estrellas */
+      overflow-x: hidden;
     }
 
     h1 { font-size: 3rem; margin-bottom: 0.2em; letter-spacing: 3px; }
@@ -111,12 +111,6 @@
     <img class="extra-photo" src="foto4.jpg" alt="Otra foto linda" />
   </div>
 
-  <p>
-    Feliz Cumpleaños chiquilla, espero cumplas muchos más preciosa y sobre todo, con salud,
-    no tengo palabras para describir lo mucho que te amo, sin duda alguna eres una mujer muy especial para mí,
-    jamás te rindas preciosa, eres muy valiosa, fuerte, eres mi todo, te adoro con todo mi ser.
-  </p>
-
   <!-- Frases con efecto máquina de escribir -->
   <p id="typewriter"></p>
 
@@ -148,73 +142,77 @@
       if (musica.paused) musica.play();
     }
 
-    /* ----------------- Video hover/touch ----------------- */
-    const video = document.querySelector('.video');
-    video.addEventListener('mouseenter', () => video.play());
-    video.addEventListener('mouseleave', () => video.pause());
-    video.addEventListener('touchstart', () => video.play(), {passive:true});
-    video.addEventListener('touchend', () => video.pause());
-
-    /* ----------------- Sobre ----------------- */
-    document.getElementById('envelope').addEventListener('click', e=>e.currentTarget.classList.toggle('open'));
-
-    /* ----------------- Velitas, confeti ----------------- */
-    const contenedorVelas = document.getElementById('velasCumple');
-
-    function apagarVela(vela){
-      if(!vela.classList.contains('apagada')){
-         vela.classList.add('apagada');
-         checkVelas();
-      }
-    }
-
-    function checkVelas(){
-      const restantes = document.querySelectorAll('.vela:not(.apagada)');
-      if(restantes.length===0){
-        confetti({particleCount:200, spread:90, origin:{y:0.6}});
-        setTimeout(()=>alert('¡Pide un deseo jiji ❤️'),600);
-      }
-    }
-
-    for(let i=0;i<17;i++){
-      const vela=document.createElement('div');
-      vela.classList.add('vela');
-      const llama=document.createElement('div');
-      llama.classList.add('llama');
-      vela.appendChild(llama);
-      contenedorVelas.appendChild(vela);
-      vela.addEventListener('click', ()=>apagarVela(vela));
-      vela.addEventListener('mouseenter', ()=>apagarVela(vela));
-      vela.addEventListener('touchstart', ()=>apagarVela(vela), {passive:true});
-    }
-
-    /* ----------------- Máquina de escribir ----------------- */
-    const frases=[
+    /* ----------------- Frases máquina de escribir (frases originales) ----------------- */
+    const frases = [
       "Te amo muchisimo bb",
       "Recuerda que siempre estaré para ti",
       "Tengo ganas de besarte pequeñita",
       "Eres la mejor ❤️"
     ];
-    let idx=0, pos=0;
-    function escribir(){
-      const el=document.getElementById('typewriter');
-      if(!el) return;
-      if(pos < frases[idx].length){
-        el.textContent += frases[idx][pos++];
+    let fraseIdx = 0, charIdx = 0;
+    function escribir() {
+      const el = document.getElementById('typewriter');
+      if (charIdx < frases[fraseIdx].length) {
+        el.textContent += frases[fraseIdx][charIdx++];
         setTimeout(escribir, 80);
       } else {
-        setTimeout(()=>{ el.textContent=''; pos=0; idx=(idx+1)%frases.length; escribir(); }, 2000);
+        setTimeout(() => {
+          el.textContent = '';
+          charIdx = 0;
+          fraseIdx = (fraseIdx + 1) % frases.length;
+          escribir();
+        }, 2000);
       }
     }
     escribir();
 
     /* ----------------- Cambiar fondo ----------------- */
-    let starMode=false;
-    document.getElementById('temaBtn').addEventListener('click', ()=>{
-      starMode=!starMode;
+    document.getElementById('temaBtn').addEventListener('click', () => {
       document.body.classList.toggle('starry');
-      document.getElementById('temaBtn').textContent = starMode ? 'Cambiar de nuevo 😙' : 'click para sorpresa jiji';
     });
+
+    /* ----------------- Sobre interactivo ----------------- */
+    document.getElementById('envelope').addEventListener('click', function () {
+      this.classList.toggle('open');
+    });
+
+    /* ----------------- Velitas ----------------- */
+    const velasContainer = document.getElementById('velasCumple');
+    const velas = [];
+    let secretShown = false;
+
+    function handleVelaToggle(index) {
+      const vela = velas[index];
+      vela.classList.toggle('apagada');
+
+      // Mensaje secreto cuando 1ª y 7ª vela apagadas
+      if (!secretShown && velas[0].classList.contains('apagada') && velas[6].classList.contains('apagada')) {
+        secretShown = true;
+        alert('Secretito jiji: un dia como este hace un año eramos mejores amigos, quien diria que hoy en tu cumpleaños numero 17 somos novios, te amo y siempre te amare...');
+      }
+
+      // Confeti cuando todas apagadas
+      if (document.querySelectorAll('.vela:not(.apagada)').length === 0) {
+        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+      }
+    }
+
+    for (let i = 0; i < 17; i++) {
+      const vela = document.createElement('div');
+      vela.className = 'vela';
+      vela.innerHTML = '<div class="llama"></div>';
+      vela.addEventListener('click', () => handleVelaToggle(i));
+      vela.addEventListener('touchstart', () => handleVelaToggle(i), { passive: true });
+      velasContainer.appendChild(vela);
+      velas.push(vela);
+    }
+
+    /* ----------------- Video hover/touch ----------------- */
+    const video = document.querySelector('.video');
+    video.addEventListener('mouseenter', () => video.play());
+    video.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
+    video.addEventListener('touchstart', () => video.play(), { passive: true });
+    video.addEventListener('touchend', () => video.pause());
   </script>
 </body>
 </html>
