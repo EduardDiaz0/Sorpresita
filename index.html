@@ -4,41 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Holiss ❤️</title>
+  
+  <!-- Confeti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
   <style>
+    /* ------------------ Base ------------------ */
     body {
       background: linear-gradient(135deg, #b4ebec, hsl(303, 100%, 49%));
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 0;
+      padding: 20px;
       color: #3a2e2e;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       align-items: center;
       text-align: center;
-      padding: 20px;
+      overflow-x: hidden; /* Evitar scroll lateral con estrellas */
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.2em;
-      letter-spacing: 3px;
-    }
+    h1 { font-size: 3rem; margin-bottom: 0.2em; letter-spacing: 3px; }
 
-    p {
-      font-size: 1.5rem;
-      max-width: 600px;
-      margin: 0 auto 1.5em;
-      line-height: 1.6;
-    }
+    p, #typewriter { font-size: 1.5rem; max-width: 600px; margin: 0 auto 1.5em; line-height: 1.6; }
 
-    .media-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 2em;
-    }
+    .media-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 2em; }
 
     .photo, .extra-photo, .video {
       border-radius: 20px;
@@ -46,7 +36,6 @@
       box-shadow: 0 0 15px rgba(248, 0, 248, 0.6);
       transition: transform 0.3s ease;
     }
-
     .photo { max-width: 300px; max-height: 300px; }
     .extra-photo { max-width: 250px; max-height: 200px; }
     .video { max-width: 250px; max-height: 270px; cursor: pointer; }
@@ -58,31 +47,64 @@
     footer { margin-top: auto; font-size: 0.9rem; color: #666; }
 
     .btn {
-      background-color: #e63990; color:#fff; padding:0.8em 1.6em; border:none; border-radius:30px; font-size:1.2rem; cursor:pointer; transition:background-color 0.3s ease; margin:1em;
+      background-color: #e63990;
+      color:#fff;
+      padding:0.8em 1.6em;
+      border:none;
+      border-radius:30px;
+      font-size:1.1rem;
+      cursor:pointer;
+      transition:background-color 0.3s ease;
+      margin:0.5em;
+      white-space: nowrap;
     }
     .btn:hover { background-color:#b32a33; }
 
-    .button-envelope-container { display:flex; align-items:center; gap:35px; margin-top:2rem; }
+    .button-envelope-container {
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      gap:20px;
+      margin-top:2rem;
+    }
 
-    /* ----- SOBRE ----- */
+    /* -------- Sobre -------- */
     .envelope-container { position:relative; width:100px; height:70px; perspective:1000px; cursor:pointer; overflow:hidden; }
-
     .envelope-body { width:100%; height:100%; background:#39dae6; border-radius:0 0 15px 15px; box-shadow:0 0 15px rgba(0, 178, 248, 0.4); z-index:2; position:relative; transition:opacity 0.7s ease 0.7s; }
     .open .envelope-body { opacity:0; }
-
     .envelope-flap { position:absolute; width:100%; height:100%; background:#39c1e6; top:0; left:0; clip-path:polygon(0 0,100% 0,50% 60%); transform-origin:top; transition:transform 0.5s ease; z-index:3; }
     .open .envelope-flap { transform:rotateX(-180deg); z-index:5; }
-
-    .letter {
-      position:absolute; top:100%; left:0; width:100%; background:#fff; padding:10px; box-sizing:border-box; font-size:0.8rem; line-height:1.35; border-radius:0 0 15px 15px; box-shadow:0 6px 12px rgba(0,0,0,0.1); overflow:hidden; max-height:0; opacity:0; transition:max-height 0.6s ease 0.3s, transform 0.6s ease 0.3s, opacity 0.3s ease 0.3s; z-index:1;
-    }
+    .letter { position:absolute; top:100%; left:0; width:100%; background:#01adeb; padding:10px; box-sizing:border-box; font-size:0.8rem; line-height:1.35; border-radius:0 0 15px 15px; box-shadow:0 6px 12px rgba(18, 0, 0, 0.413); overflow:hidden; max-height:0; opacity:0; transition:max-height 0.6s ease 0.3s, transform 0.6s ease 0.3s, opacity 0.3s ease 0.3s; z-index:1; }
     .open .letter { transform:translateY(-100%); max-height:800px; opacity:1; z-index:4; }
+
+    /* -------- Velas -------- */
+    .velas-container { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin: 2em 0; }
+    .vela { width:12px; height:40px; background:#e07a5f; position:relative; border-radius:3px; cursor:pointer; transition:transform .2s ease; }
+    .vela:hover { transform:translateY(-3px); }
+    .llama { width:10px; height:20px; background:radial-gradient(ellipse at center,#ffdd55 0%,#ff9900 80%); border-radius:50%; position:absolute; top:-18px; left:1px; animation:flicker .3s infinite; pointer-events:none; transform-origin:center; }
+    @keyframes flicker{0%{transform:scale(1) rotate(0);opacity:1;}50%{transform:scale(1.1) rotate(2deg);opacity:.85;}100%{transform:scale(1) rotate(-2deg);opacity:1;}}
+    .vela.apagada .llama{display:none;}
+
+    /* -------- Tema estrellado -------- */
+    body.starry { background: radial-gradient(circle at 20% 20%, #273c75 0%, #192a56 40%, #0c1442 80%); color:#eaeaea; }
+    body.starry::before {
+      content:'';
+      position:fixed;
+      top:0; left:0;
+      width:200%; height:200%;
+      background:url('https://raw.githubusercontent.com/KilianKegel/starry-sky/master/stars.png') repeat;
+      animation:moveStars 100s linear infinite;
+      z-index:-2;
+      pointer-events:none;
+    }
+    @keyframes moveStars{from{transform:translateY(0);}to{transform:translateY(-1000px);}}
   </style>
 </head>
 <body>
-
   <h1>Con todo el amor del mundo para mi pequeña 💕</h1>
 
+  <!-- Carrusel de fotos básico -->
   <div class="media-container">
     <img class="photo" src="foto3.jpg" alt="Foto principal" />
     <video class="video" src="video1.mp4" muted></video>
@@ -92,43 +114,108 @@
   <p>
     Feliz Cumpleaños chiquilla, espero cumplas muchos más preciosa y sobre todo, con salud,
     no tengo palabras para describir lo mucho que te amo, sin duda alguna eres una mujer muy especial para mí,
-    jamas te rindas preciosa, eres muy valiosa, fuerte, eres mi todo, te adoro con todo mi ser.
+    jamás te rindas preciosa, eres muy valiosa, fuerte, eres mi todo, te adoro con todo mi ser.
   </p>
+
+  <!-- Frases con efecto máquina de escribir -->
+  <p id="typewriter"></p>
+
+  <!-- 17 velitas -->
+  <div class="velas-container" id="velasCumple"></div>
 
   <div class="heart">💕</div>
 
   <div class="button-envelope-container">
     <button class="btn" onclick="mostrarMensaje()">Presiona aquí ❤️</button>
+    <button class="btn" id="temaBtn">click para sorpresita jiji</button>
 
     <div id="envelope" class="envelope-container">
       <div class="envelope-body"></div>
       <div class="envelope-flap"></div>
-      <div class="letter">
-
-        Estoy muy orgulloso de ti❤️
-      </div>
+      <div class="letter">Estoy muy orgulloso de ti ❤️</div>
     </div>
   </div>
 
-  <footer>Te amo Te amo Te amo Te amo Te amo Te amo Te amo</footer>
+  <footer>Lo eres todo para mi, mi paolita ❤️</footer>
 
   <audio id="musicaFondo" src="cumpleaños.mp3" autoplay loop></audio>
 
   <script>
-    function mostrarMensaje() { alert("¡Felices 17 mi chiquilla hermosa 💕!"); }
+    /* ----------------- Botón principal ----------------- */
+    function mostrarMensaje() {
+      alert("¡Felices 17 mi chiquilla hermosa 💕!");
+      const musica = document.getElementById('musicaFondo');
+      if (musica.paused) musica.play();
+    }
 
-    document.querySelector('.btn').addEventListener('click', () => {
-      const musica=document.getElementById('musicaFondo'); if(musica.paused){musica.play();}
+    /* ----------------- Video hover/touch ----------------- */
+    const video = document.querySelector('.video');
+    video.addEventListener('mouseenter', () => video.play());
+    video.addEventListener('mouseleave', () => video.pause());
+    video.addEventListener('touchstart', () => video.play(), {passive:true});
+    video.addEventListener('touchend', () => video.pause());
+
+    /* ----------------- Sobre ----------------- */
+    document.getElementById('envelope').addEventListener('click', e=>e.currentTarget.classList.toggle('open'));
+
+    /* ----------------- Velitas, confeti ----------------- */
+    const contenedorVelas = document.getElementById('velasCumple');
+
+    function apagarVela(vela){
+      if(!vela.classList.contains('apagada')){
+         vela.classList.add('apagada');
+         checkVelas();
+      }
+    }
+
+    function checkVelas(){
+      const restantes = document.querySelectorAll('.vela:not(.apagada)');
+      if(restantes.length===0){
+        confetti({particleCount:200, spread:90, origin:{y:0.6}});
+        setTimeout(()=>alert('¡Pide un deseo jiji ❤️'),600);
+      }
+    }
+
+    for(let i=0;i<17;i++){
+      const vela=document.createElement('div');
+      vela.classList.add('vela');
+      const llama=document.createElement('div');
+      llama.classList.add('llama');
+      vela.appendChild(llama);
+      contenedorVelas.appendChild(vela);
+      vela.addEventListener('click', ()=>apagarVela(vela));
+      vela.addEventListener('mouseenter', ()=>apagarVela(vela));
+      vela.addEventListener('touchstart', ()=>apagarVela(vela), {passive:true});
+    }
+
+    /* ----------------- Máquina de escribir ----------------- */
+    const frases=[
+      "Te amo muchisimo bb",
+      "Recuerda que siempre estaré para ti",
+      "Tengo ganas de besarte peuqeñita",
+      "Eres la mejor ❤️"
+    ];
+    let idx=0, pos=0;
+    function escribir(){
+      const el=document.getElementById('typewriter');
+      if(!el) return;
+      if(pos < frases[idx].length){
+        el.textContent += frases[idx][pos++];
+        setTimeout(escribir, 80);
+      } else {
+        setTimeout(()=>{ el.textContent=''; pos=0; idx=(idx+1)%frases.length; escribir(); }, 2000);
+      }
+    }
+    escribir();
+
+    /* ----------------- Cambiar fondo ----------------- */
+    let starMode=false;
+    document.getElementById('temaBtn').addEventListener('click', ()=>{
+      starMode=!starMode;
+      document.body.classList.toggle('starry');
+      document.getElementById('temaBtn').textContent = starMode ? 'Cambiar de nuevo 😙' : 'click para sorpresa jiji';
     });
-
-    const video=document.querySelector('.video');
-    video.addEventListener('mouseenter',()=>video.play());
-    video.addEventListener('mouseleave',()=>video.pause());
-    video.addEventListener('touchstart',()=>video.play());
-    video.addEventListener('touchend',()=>video.pause());
-
-    const envelope=document.getElementById('envelope');
-    envelope.addEventListener('click',()=>{ envelope.classList.toggle('open'); });
   </script>
 </body>
 </html>
+
