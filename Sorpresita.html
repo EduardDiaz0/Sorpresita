@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Holiss ❤️ </title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #b4ebec, hsl(303, 100%, 49%));
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #3a2e2e;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.2em;
+      letter-spacing: 3px;
+    }
+
+    p {
+      font-size: 1.5rem;
+      max-width: 600px;
+      margin: 0 auto 1.5em;
+      line-height: 1.6;
+    }
+
+    .media-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 2em;
+    }
+
+    .photo, .extra-photo, .video {
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0 0 15px rgba(248, 0, 248, 0.6);
+      transition: transform 0.3s ease;
+    }
+
+    .photo {
+      max-width: 300px;
+      max-height: 300px;
+    }
+
+    .extra-photo {
+      max-width: 250px;
+      max-height: 200px;
+    }
+
+    .video {
+      max-width: 250px;
+      max-height: 270px;
+      cursor: pointer;
+    }
+
+    .photo:hover, .extra-photo:hover, .video:hover {
+      transform: scale(1.10);
+    }
+
+    .heart {
+      font-size: 4rem;
+      color: #e63998;
+      margin: 1rem 0;
+      animation: pulse 3s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    footer {
+      margin-top: auto;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .btn {
+      background-color: #e63990;
+      color: white;
+      padding: 0.8em 1.6em;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 1em;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background-color: #b32a33;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Con todo el amor del mundo para mi pequeña 💕</h1>
+
+  <div class="media-container">
+    <img class="photo" src="foto1.jpg" alt="Foto principal" />
+    <video class="video" src="video.mp4" muted></video>
+    <img class="extra-photo" src="foto2.jpg" alt="Otra foto linda" />
+  </div>
+
+  <p>
+    Feliz Cumpleaños chiquilla, espero cumplas muchos más preciosa y sobre todo, con salud,
+    no tengo palabras para describir lo mucho que te amo, sin duda alguna eres una mujer muy especial para mí,
+    jamas te rindas preciosa, eres muy valiosa, fuerte, eres mi todo, te adoro con todo mi ser.
+  </p>
+
+  <div class="heart">💕</div>
+
+  <button class="btn" onclick="mostrarMensaje()">Presiona aquí ❤️</button>
+
+  <footer>Te amo Te amo Te amo Te amo Te amo Te amor Te amo</footer>
+
+  <audio id="musicaFondo" src="musica.mp3" autoplay loop></audio>
+
+  <script>
+    function mostrarMensaje() {
+      alert("¡Felices 17 mi chiquilla hermosa 💕!");
+    }
+
+    document.querySelector('.btn').addEventListener('click', () => {
+      const musica = document.getElementById('musicaFondo');
+      if (musica.paused) {
+        musica.play();
+      }
+    });
+
+    const video = document.querySelector('.video');
+    video.addEventListener('mouseenter', () => video.play());
+    video.addEventListener('mouseleave', () => video.pause());
+    video.addEventListener('touchstart', () => video.play());
+    video.addEventListener('touchend', () => video.pause());
+  </script>
+</body>
+</html>
